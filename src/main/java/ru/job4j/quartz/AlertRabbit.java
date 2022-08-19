@@ -24,17 +24,17 @@ public class AlertRabbit {
                     .withSchedule(times)
                     .build();
             scheduler.scheduleJob(job, trigger);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (SchedulerException | IOException se) {
+            se.printStackTrace();
         }
     }
 
-    public static int getTimePeriod(String filePath) {
+    public static int getTimePeriod(String filePath) throws IOException {
         Properties cfg = new Properties();
         try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream(filePath)) {
             cfg.load(in);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         return Integer.parseInt(cfg.getProperty("rabbit.interval"));
     }
