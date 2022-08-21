@@ -33,7 +33,7 @@ public class AlertRabbit {
         Properties cfg = new Properties();
         try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream(filePath)) {
             cfg.load(in);
-        } catch (Exception ex) {
+        } catch (NullPointerException | IOException ex) {
             throw new IllegalArgumentException();
         }
         return Integer.parseInt(cfg.getProperty("rabbit.interval"));
