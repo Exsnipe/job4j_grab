@@ -43,7 +43,8 @@ public class AlertRabbit {
 
     public static void init() {
         cfg = new Properties();
-        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
+        try (InputStream in = AlertRabbit.class
+                .getClassLoader().getResourceAsStream("rabbit.properties")) {
             cfg.load(in);
         } catch (NullPointerException | IOException ex) {
             throw new IllegalArgumentException();
@@ -66,7 +67,8 @@ public class AlertRabbit {
         @Override
         public void execute(JobExecutionContext context) {
             System.out.println("Rabbit runs here ...");
-            Connection cnFromContext = (Connection) context.getJobDetail().getJobDataMap().get("connection");
+            Connection cnFromContext = (Connection) context.
+                    getJobDetail().getJobDataMap().get("connection");
             try (PreparedStatement ps = cnFromContext
                    .prepareStatement("insert into rabbit (created_date) values (?)")) {
                 ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
