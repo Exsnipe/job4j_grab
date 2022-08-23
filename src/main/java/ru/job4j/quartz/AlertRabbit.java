@@ -13,12 +13,15 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 
 public class AlertRabbit {
-    private static Properties cfg;
-    private static Connection cn;
 
     public static void main(String[] args) {
-        init();
-        try {
+        Properties cfg = getConfig("rabbit.properties");
+        try (Connection cn = getConnection(cfg)) {
+            try (Statement st = cn.createStatement()) {
+                st.execute("truncate rabbit");
+            } catch (SQLException sqlEx) {
+                sqlEx.printStackTrace();
+            }
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
@@ -41,26 +44,29 @@ public class AlertRabbit {
         }
     }
 
-    public static void init() {
-        cfg = new Properties();
+    public static Properties getConfig(String path) {
+        Properties cfg = new Properties();
         try (InputStream in = AlertRabbit.class
-                .getClassLoader().getResourceAsStream("rabbit.properties")) {
+                .getClassLoader().getResourceAsStream(path)) {
             cfg.load(in);
-        } catch (NullPointerException | IOException ex) {
+        } catch (IOException ex) {
             throw new IllegalArgumentException();
         }
+        return cfg;
+    }
+
+    public static Connection getConnection(Properties cfg) {
+        Connection cn = null;
         try {
             Class.forName(cfg.getProperty("driver-class-name"));
-            cn = DriverManager.getConnection(cfg.getProperty("url"),
-                    cfg.getProperty("username"), cfg.getProperty("password"));
-            try (Statement st = cn.createStatement()) {
-                st.execute("truncate rabbit");
-            } catch (SQLException sqlEx) {
-                sqlEx.printStackTrace();
-            }
+            cn = DriverManager.getConnection(
+                    cfg.getProperty("url"),
+                    cfg.getProperty("username"),
+                    cfg.getProperty("password"));
         } catch (ClassNotFoundException | SQLException exception) {
             exception.printStackTrace();
         }
+        return cn;
     }
 
     public static class Rabbit implements Job {
