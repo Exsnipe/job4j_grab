@@ -55,18 +55,14 @@ public class AlertRabbit {
         return cfg;
     }
 
-    public static Connection getConnection(Properties cfg) {
-        Connection cn = null;
-        try {
-            Class.forName(cfg.getProperty("driver-class-name"));
-            cn = DriverManager.getConnection(
-                    cfg.getProperty("url"),
-                    cfg.getProperty("username"),
-                    cfg.getProperty("password"));
-        } catch (ClassNotFoundException | SQLException exception) {
-            exception.printStackTrace();
-        }
-        return cn;
+    public static Connection getConnection(Properties cfg)
+            throws SQLException, ClassNotFoundException {
+        Class.forName(cfg.getProperty("driver-class-name"));
+        return DriverManager.getConnection(
+                cfg.getProperty("url"),
+                cfg.getProperty("username"),
+                cfg.getProperty("password")
+        );
     }
 
     public static class Rabbit implements Job {
