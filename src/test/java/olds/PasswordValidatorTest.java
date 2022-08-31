@@ -4,41 +4,72 @@ import org.junit.Test;
 import ru.job4j.olds.PasswordValidator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class PasswordValidatorTest {
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public  void whenPasswordIsNullThenException() {
-        PasswordValidator.validate(null);
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> PasswordValidator.validate(null)
+        );
+        assertEquals("There are no password", thrown.getMessage());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenPasswordIsShortThenException() {
-        PasswordValidator.validate("MaA$5fF");
+
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> PasswordValidator.validate("MaA$5fF")
+        );
+        assertEquals("Password must consist of 8 to 32 symbols", thrown.getMessage());
     }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
     public void whenPasswordIsLongThenException() {
-        PasswordValidator.validate("aA$5dfgghj677hjku$^&fhkyiljhfrdt8");
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> PasswordValidator.validate("aA$5dfgghj677hjku$^&fhkyiljhfrdt8")
+        );
+        assertEquals("Password must consist of 8 to 32 symbols", thrown.getMessage());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void whenOnlyCursiveLettersThenException() {
-        PasswordValidator.validate("maa$5ffj");
+    @Test
+    public void whenOnlyLowercaseLettersThenException() {
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> PasswordValidator.validate("maa$5ffj")
+        );
+        assertEquals("You need to have at least 1 capital letter in password", thrown.getMessage());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenOnlyCapitalLettersThenException() {
-        PasswordValidator.validate("MAA$5FFJ");
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> PasswordValidator.validate("MAA$5FFJ")
+        );
+        assertEquals("You need to have at least 1 cursive letter in password", thrown.getMessage());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenThereAreNoSpecialSymbolsThenException() {
-        PasswordValidator.validate("JjKk4kKl");
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> PasswordValidator.validate("JjKk4kKl")
+        );
+        assertEquals("You need to have at least 1 special symbol in password", thrown.getMessage());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenThereAreTypedStringInPasswordThenException() {
-        PasswordValidator.validate("JjKk4kKl&qWerTY");
+
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> PasswordValidator.validate("JjKk4kKl&qWerTY")
+        );
+        assertEquals("You have to avoid typed strings", thrown.getMessage());
     }
 
     @Test

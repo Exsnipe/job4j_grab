@@ -3,7 +3,7 @@ package ru.job4j.olds;
 public class PasswordValidator {
     public static String validate(String password) throws IllegalArgumentException {
         if (null == password) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("There are no password");
         }
         if (password.length() < 8 || password.length() > 32) {
             throw new IllegalArgumentException("Password must consist of 8 to 32 symbols");
