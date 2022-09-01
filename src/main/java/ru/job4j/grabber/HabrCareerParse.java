@@ -15,7 +15,7 @@ public class HabrCareerParse {
             .format("%s/vacancies/java_developer?page=", SOURCE_LINK);
 
     public static void main(String[] args) throws IOException {
-       for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 5; i++) {
            Connection connection = Jsoup.connect(String.format("%s%d", PAGE_LINK, i));
            Document document = connection.get();
            Elements rows = document.select(".vacancy-card__inner");
@@ -28,5 +28,12 @@ public class HabrCareerParse {
                System.out.printf("%s %s %s%n", titleElement.text(), link, date);
            });
        }
+    }
+
+    private String retrieveDescription(String url) throws IOException {
+        Connection connection = Jsoup.connect(url);
+        Document document = connection.get();
+        Element element = document.select(".style-ugc").first();
+        return element.text();
     }
 }
