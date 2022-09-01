@@ -18,6 +18,13 @@ public class Post {
         this.created = created;
     }
 
+    public Post(String title, String link, String description, LocalDateTime created) {
+        this.title = title;
+        this.link = link;
+        this.description = description;
+        this.created = created;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -27,13 +34,13 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return Objects.equals(title, post.title) && Objects.equals(link, post.link)
-                && Objects.equals(description, post.description);
+        return id == post.id && Objects.equals(link, post.link)
+                && Objects.equals(created, post.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, link, description);
+        return Objects.hash(id, link, created);
     }
 
     public int getId() {
