@@ -18,8 +18,8 @@ public class HabrCareerParse implements Parse {
     private static final String SOURCE_LINK = "https://career.habr.com";
     private static final String PAGE_LINK = String
             .format("%s/vacancies/java_developer?page=", SOURCE_LINK);
+    private final static  int LOOP_NUMBER = 5;
     private final DateTimeParser dateTimeParser;
-    private final int loopNumber = 5;
 
     public HabrCareerParse(DateTimeParser dateTimeParser) {
         this.dateTimeParser = dateTimeParser;
@@ -49,7 +49,7 @@ public class HabrCareerParse implements Parse {
     @Override
     public List<Post> list(String link) {
         List<Post> postList = new ArrayList<>();
-        for (int i = 1; i <= loopNumber; i++) {
+        for (int i = 1; i <= LOOP_NUMBER; i++) {
             Connection connection = Jsoup.connect(String.format("%s%d", link, i));
             try {
                 Document document = connection.get();
