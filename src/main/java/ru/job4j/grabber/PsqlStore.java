@@ -35,7 +35,7 @@ public class PsqlStore implements Store, AutoCloseable {
             statement.setTimestamp(4, Timestamp.valueOf(post.getCreated()));
             statement.execute();
         } catch (SQLException sqlException) {
-            throw new IllegalArgumentException();
+            sqlException.printStackTrace();
         }
     }
 
@@ -48,7 +48,7 @@ public class PsqlStore implements Store, AutoCloseable {
                 postList.add(getPostFromResultSet(result));
             }
         } catch (SQLException sqlException) {
-            throw new IllegalArgumentException();
+            sqlException.printStackTrace();
         }
         return postList;
     }
